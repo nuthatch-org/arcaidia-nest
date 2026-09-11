@@ -149,8 +149,8 @@ The Sepolia history is 21,000 blocks and catches up in three seconds on the publ
 | `settlement_receiver` | SettlementReceiver | `0x9a47a161ea8328b96Ad976264d42790881570E71` | 61,414,683 | 11,675,651 |
 | `settlement_receiver_legacy` | SettlementReceiver, retired 2026-09-10 | `0xb634d0fDa74BacF730B1eF50a32b4c83f13f11fC` | 61,052,876 | 11,660,148 |
 
-ABIs are vendored from the repository's `subgraph/abis/`, and are byte-for-byte the same event set
-as the three ABI files the builder sent on 11 September. Every distinct event topic observed on
+ABIs are vendored from the repository's `subgraph/abis/`, and declare the same events, signature for
+signature, as the three ABI files the builder sent on 11 September. Every distinct event topic observed on
 Arc, twenty of them, matches an event in those files; checked the same day.
 
 ## Help

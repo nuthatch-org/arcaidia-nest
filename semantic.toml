@@ -5,7 +5,7 @@
 schema_version = 1
 
 [nest]
-description = "The `arcaidia-nest` nest on arc-testnet. (seeded from the ABI - edit semantic.toml to improve this)"
+description = "Arcaidia on Arc Testnet: the intent router, liquidity vault and both settlement receivers, with views that mirror the subgraph entities (intents, fills, settlements, vault, protocol_state)."
 
 [table.intent_router__destination_configured]
 description = "`DestinationConfigured(uint256,address)` events emitted by the `intent_router` contract. (seeded from the ABI - edit semantic.toml to improve this)"
