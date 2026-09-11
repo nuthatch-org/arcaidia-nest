@@ -1,6 +1,8 @@
 -- The subgraph's `Intent` entity. fast_status and canonical_status are derived from whether a
 -- fill or a settlement exists for the intent on this chain, which is what the mapping's
 -- best-effort local join does; an intent created on the other chain has no row here at all.
+-- nonce stays the exact text column: it is a random full-width uint256 and its _dec companion
+-- overflows to null on every row.
 CREATE VIEW intents AS
   SELECT i."intentId"               AS id,
          i.sender,
@@ -11,7 +13,7 @@ CREATE VIEW intents AS
          i."destinationChainId_dec" AS destination_chain_id,
          i."maxFeeBps"              AS max_fee_bps,
          i.deadline,
-         i.nonce_dec                AS nonce,
+         i.nonce                    AS nonce,
          i."settlementRef"          AS settlement_ref,
          CASE WHEN f.id IS NULL THEN 'PENDING' ELSE 'FAST_FILLED' END AS fast_status,
          CASE WHEN s.id IS NULL THEN 'PENDING' ELSE 'SETTLED' END     AS canonical_status,
