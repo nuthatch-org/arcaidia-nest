@@ -1,0 +1,57 @@
+# nuthatch nest on arc-testnet
+
+A self-hosted blockchain index. Query it locally; there is no third-party API.
+
+## Contracts
+- `intent_router` = 0x58868465d14e0694d033bd511588ae90482b21cc
+- `liquidity_vault` = 0xc74e693938dfbf7c11b787ba27cdde4c0215aaf1
+- `settlement_receiver` = 0x9a47a161ea8328b96ad976264d42790881570e71
+- `settlement_receiver_legacy` = 0xb634d0fda74bacf730b1ef50a32b4c83f13f11fc
+
+## Tables (one per contract event)
+- `intent_router__destination_configured` - DestinationConfigured(uint256,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, chainId, receiver)
+- `intent_router__in_flight_released` - InFlightReleased(bytes32,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, amount)
+- `intent_router__intent_created` - IntentCreated(bytes32,address,address,address,uint256,uint256,uint256,uint16,uint64,uint256,bytes32) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, sender, recipient, inputToken, amount, sourceChainId, destinationChainId, maxFeeBps, deadline, nonce, settlementRef)
+- `intent_router__limits_configured` - LimitsConfigured(uint256,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, maxIntentAmount, maxInFlightValue)
+- `intent_router__owner_transferred` - OwnerTransferred(address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, previousOwner, newOwner)
+- `intent_router__paused_set` - PausedSet(bool) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, paused)
+- `intent_router__router_initialized` - RouterInitialized(address,address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, owner, settlementAsset, settlementInitiator)
+- `liquidity_vault__approval` - Approval(address,address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, owner, spender, value)
+- `liquidity_vault__authorised_signer_set` - AuthorisedSignerSet(address,bool) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, signer, allowed)
+- `liquidity_vault__deposit` - Deposit(address,address,uint256,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, caller, receiver, assets, shares)
+- `liquidity_vault__fast_filled` - FastFilled(bytes32,address,address,uint256,uint256,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, recipient, signer, inputAmount, outputAmount, feeAmount)
+- `liquidity_vault__fees_accrued` - FeesAccrued(bytes32,uint256,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, toProtocol, toLps)
+- `liquidity_vault__fees_withdrawn` - FeesWithdrawn(address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, treasury, amount)
+- `liquidity_vault__fill_limits_configured` - FillLimitsConfigured(uint16,uint16,uint16) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, maxFillBps, maxExposureBps, maxFeeBps)
+- `liquidity_vault__fill_recorded` - FillRecorded(bytes32,address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, recipient, outputAmount)
+- `liquidity_vault__owner_transferred` - OwnerTransferred(address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, previousOwner, newOwner)
+- `liquidity_vault__paused_set` - PausedSet(bool) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, paused)
+- `liquidity_vault__protocol_fee_share_configured` - ProtocolFeeShareConfigured(uint16) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, protocolFeeShareBps)
+- `liquidity_vault__reimbursement_recorded` - ReimbursementRecorded(bytes32,uint256,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, amountReceived, exposureCleared)
+- `liquidity_vault__reserve_floor_configured` - ReserveFloorConfigured(uint16) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, reserveFloorBps)
+- `liquidity_vault__settlement_receiver_configured` - SettlementReceiverConfigured(address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, settlementReceiver)
+- `liquidity_vault__transfer` - Transfer(address,address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, from, to, value)
+- `liquidity_vault__treasury_configured` - TreasuryConfigured(address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, treasury)
+- `liquidity_vault__vault_initialized` - VaultInitialized(address,address,uint16) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, owner, asset, reserveFloorBps)
+- `liquidity_vault__withdraw` - Withdraw(address,address,address,uint256,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, caller, receiver, shareOwner, assets, shares)
+- `settlement_receiver__lp_reimbursed` - LpReimbursed(bytes32,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, amount)
+- `settlement_receiver__receiver_initialized` - ReceiverInitialized(address,address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, owner, asset, vault)
+- `settlement_receiver__recipient_paid_by_fallback` - RecipientPaidByFallback(bytes32,address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, recipient, amount)
+- `settlement_receiver__reporter_set` - ReporterSet(address,bool) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, reporter, allowed)
+- `settlement_receiver_legacy__lp_reimbursed` - LpReimbursed(bytes32,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, amount)
+- `settlement_receiver_legacy__receiver_initialized` - ReceiverInitialized(address,address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, owner, asset, vault)
+- `settlement_receiver_legacy__recipient_paid_by_fallback` - RecipientPaidByFallback(bytes32,address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, recipient, amount)
+- `settlement_receiver_legacy__reporter_set` - ReporterSet(address,bool) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, reporter, allowed)
+
+## Live HTTP API (run `nuthatch dev`)
+- `GET /`                    index status
+- `GET /tables`              every table with its columns
+- `GET /table/{name}?limit=N` recent rows of one table (hot + sealed)
+- `GET /entity/{id}`         one row by id (`{block:012}-{logindex:06}`)
+- `GET /sql?q=SELECT...`     read-only SQL; each table is a view named `{alias}__{event}`
+- `GET /balances?limit=N`    top holder balances (when an ERC-20 Transfer table is present)
+- `GET /balance/{address}`   one address's derived balance
+
+## MCP (for coding agents)
+Run `nuthatch mcp` (stdio) to expose tools: status, schema, tables, table, sql, entity,
+balance, top_balances. Fully offline against the local instance; nothing phones home.

@@ -1,0 +1,31 @@
+[nest]
+name = "arcaidia-nest-sepolia"
+chain = "sepolia"
+chain_id = 11155111
+rpc_urls = ["https://ethereum-sepolia-rpc.publicnode.com"]
+schema_version = 1
+block_timestamps = true
+
+[[contracts]]
+alias = "intent_router"
+address = "0x58868465d14e0694d033bd511588ae90482b21cc"
+start_block = 11667863
+abi = "abis/intent_router.json"
+
+[[contracts]]
+alias = "liquidity_vault"
+address = "0xc74e693938dfbf7c11b787ba27cdde4c0215aaf1"
+start_block = 11675651
+abi = "abis/liquidity_vault.json"
+
+[[contracts]]
+alias = "settlement_receiver"
+address = "0x9a47a161ea8328b96ad976264d42790881570e71"
+start_block = 11675651
+abi = "abis/settlement_receiver.json"
+
+[[contracts]]
+alias = "settlement_receiver_legacy"
+address = "0xb634d0fda74bacf730b1ef50a32b4c83f13f11fc"
+start_block = 11660148
+abi = "abis/settlement_receiver_legacy.json"

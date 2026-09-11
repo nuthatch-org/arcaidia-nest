@@ -1,0 +1,449 @@
+# semantic.toml - what this nest's data *means* (RFC-0016). Read by the MCP `schema`
+# tool, the admin UI, and the scaffolded skill. Edit descriptions freely; the
+# `[table.*.footguns]` are DERIVED from the ABI and regenerated - leave them be.
+
+schema_version = 1
+
+[nest]
+description = "The `arcaidia-nest` nest on arc-testnet. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.intent_router__destination_configured]
+description = "`DestinationConfigured(uint256,address)` events emitted by the `intent_router` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per DestinationConfigured(uint256,address) event"
+
+[table.intent_router__destination_configured.columns]
+chainId = "The `chainId` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+receiver = "The `receiver` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.intent_router__destination_configured.footguns]
+big_ints = ["chainId"]
+overflows_dec = ["chainId"]
+
+[table.intent_router__in_flight_released]
+description = "`InFlightReleased(bytes32,uint256)` events emitted by the `intent_router` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per InFlightReleased(bytes32,uint256) event"
+
+[table.intent_router__in_flight_released.columns]
+amount = "The `amount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+intentId = "The `intentId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.intent_router__in_flight_released.footguns]
+big_ints = ["amount"]
+overflows_dec = ["amount"]
+
+[table.intent_router__intent_created]
+description = "`IntentCreated(bytes32,address,address,address,uint256,uint256,uint256,uint16,uint64,uint256,bytes32)` events emitted by the `intent_router` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per IntentCreated(bytes32,address,address,address,uint256,uint256,uint256,uint16,uint64,uint256,bytes32) event"
+
+[table.intent_router__intent_created.columns]
+amount = "The `amount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+deadline = "The `deadline` uint64 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+destinationChainId = "The `destinationChainId` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+inputToken = "The `inputToken` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+intentId = "The `intentId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+maxFeeBps = "The `maxFeeBps` uint16 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+nonce = "The `nonce` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+recipient = "The `recipient` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+sender = "The `sender` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+settlementRef = "The `settlementRef` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+sourceChainId = "The `sourceChainId` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.intent_router__intent_created.footguns]
+big_ints = [
+    "amount",
+    "sourceChainId",
+    "destinationChainId",
+    "nonce",
+]
+overflows_dec = [
+    "amount",
+    "sourceChainId",
+    "destinationChainId",
+    "nonce",
+]
+
+[table.intent_router__limits_configured]
+description = "`LimitsConfigured(uint256,uint256)` events emitted by the `intent_router` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per LimitsConfigured(uint256,uint256) event"
+
+[table.intent_router__limits_configured.columns]
+maxInFlightValue = "The `maxInFlightValue` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+maxIntentAmount = "The `maxIntentAmount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.intent_router__limits_configured.footguns]
+big_ints = [
+    "maxIntentAmount",
+    "maxInFlightValue",
+]
+overflows_dec = [
+    "maxIntentAmount",
+    "maxInFlightValue",
+]
+
+[table.intent_router__owner_transferred]
+description = "`OwnerTransferred(address,address)` events emitted by the `intent_router` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per OwnerTransferred(address,address) event"
+
+[table.intent_router__owner_transferred.columns]
+newOwner = "The `newOwner` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+previousOwner = "The `previousOwner` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.intent_router__paused_set]
+description = "`PausedSet(bool)` events emitted by the `intent_router` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per PausedSet(bool) event"
+
+[table.intent_router__paused_set.columns]
+paused = "The `paused` bool parameter - stored as exact text `'true'`/`'false'`, not a SQL boolean. `paused = true` and `AND`/`NOT` implicitly cast and work; `COALESCE`, `CASE`, `bool_and`/`bool_or` and `UNION` do not. Write `paused = 'true'` or `CAST(paused AS BOOLEAN)`. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.intent_router__paused_set.footguns]
+bools = ["paused"]
+
+[table.intent_router__router_initialized]
+description = "`RouterInitialized(address,address,address)` events emitted by the `intent_router` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per RouterInitialized(address,address,address) event"
+
+[table.intent_router__router_initialized.columns]
+owner = "The `owner` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+settlementAsset = "The `settlementAsset` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+settlementInitiator = "The `settlementInitiator` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.liquidity_vault__approval]
+description = "`Approval(address,address,uint256)` events emitted by the `liquidity_vault` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per Approval(address,address,uint256) event"
+
+[table.liquidity_vault__approval.columns]
+owner = "The `owner` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+spender = "The `spender` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+value = "The `value` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.liquidity_vault__approval.footguns]
+big_ints = ["value"]
+overflows_dec = ["value"]
+
+[table.liquidity_vault__authorised_signer_set]
+description = "`AuthorisedSignerSet(address,bool)` events emitted by the `liquidity_vault` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per AuthorisedSignerSet(address,bool) event"
+
+[table.liquidity_vault__authorised_signer_set.columns]
+allowed = "The `allowed` bool parameter - stored as exact text `'true'`/`'false'`, not a SQL boolean. `allowed = true` and `AND`/`NOT` implicitly cast and work; `COALESCE`, `CASE`, `bool_and`/`bool_or` and `UNION` do not. Write `allowed = 'true'` or `CAST(allowed AS BOOLEAN)`. (seeded from the ABI - edit semantic.toml to improve this)"
+signer = "The `signer` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.liquidity_vault__authorised_signer_set.footguns]
+bools = ["allowed"]
+
+[table.liquidity_vault__deposit]
+description = "`Deposit(address,address,uint256,uint256)` events emitted by the `liquidity_vault` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per Deposit(address,address,uint256,uint256) event"
+
+[table.liquidity_vault__deposit.columns]
+assets = "The `assets` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+caller = "The `caller` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+receiver = "The `receiver` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+shares = "The `shares` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.liquidity_vault__deposit.footguns]
+big_ints = [
+    "assets",
+    "shares",
+]
+overflows_dec = [
+    "assets",
+    "shares",
+]
+
+[table.liquidity_vault__fast_filled]
+description = "`FastFilled(bytes32,address,address,uint256,uint256,uint256)` events emitted by the `liquidity_vault` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per FastFilled(bytes32,address,address,uint256,uint256,uint256) event"
+
+[table.liquidity_vault__fast_filled.columns]
+feeAmount = "The `feeAmount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+inputAmount = "The `inputAmount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+intentId = "The `intentId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+outputAmount = "The `outputAmount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+recipient = "The `recipient` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+signer = "The `signer` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.liquidity_vault__fast_filled.footguns]
+big_ints = [
+    "inputAmount",
+    "outputAmount",
+    "feeAmount",
+]
+overflows_dec = [
+    "inputAmount",
+    "outputAmount",
+    "feeAmount",
+]
+
+[table.liquidity_vault__fees_accrued]
+description = "`FeesAccrued(bytes32,uint256,uint256)` events emitted by the `liquidity_vault` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per FeesAccrued(bytes32,uint256,uint256) event"
+
+[table.liquidity_vault__fees_accrued.columns]
+intentId = "The `intentId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+toLps = "The `toLps` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+toProtocol = "The `toProtocol` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.liquidity_vault__fees_accrued.footguns]
+big_ints = [
+    "toProtocol",
+    "toLps",
+]
+overflows_dec = [
+    "toProtocol",
+    "toLps",
+]
+
+[table.liquidity_vault__fees_withdrawn]
+description = "`FeesWithdrawn(address,uint256)` events emitted by the `liquidity_vault` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per FeesWithdrawn(address,uint256) event"
+
+[table.liquidity_vault__fees_withdrawn.columns]
+amount = "The `amount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+treasury = "The `treasury` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.liquidity_vault__fees_withdrawn.footguns]
+big_ints = ["amount"]
+overflows_dec = ["amount"]
+
+[table.liquidity_vault__fill_limits_configured]
+description = "`FillLimitsConfigured(uint16,uint16,uint16)` events emitted by the `liquidity_vault` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per FillLimitsConfigured(uint16,uint16,uint16) event"
+
+[table.liquidity_vault__fill_limits_configured.columns]
+maxExposureBps = "The `maxExposureBps` uint16 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+maxFeeBps = "The `maxFeeBps` uint16 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+maxFillBps = "The `maxFillBps` uint16 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.liquidity_vault__fill_recorded]
+description = "`FillRecorded(bytes32,address,uint256)` events emitted by the `liquidity_vault` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per FillRecorded(bytes32,address,uint256) event"
+
+[table.liquidity_vault__fill_recorded.columns]
+intentId = "The `intentId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+outputAmount = "The `outputAmount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+recipient = "The `recipient` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.liquidity_vault__fill_recorded.footguns]
+big_ints = ["outputAmount"]
+overflows_dec = ["outputAmount"]
+
+[table.liquidity_vault__owner_transferred]
+description = "`OwnerTransferred(address,address)` events emitted by the `liquidity_vault` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per OwnerTransferred(address,address) event"
+
+[table.liquidity_vault__owner_transferred.columns]
+newOwner = "The `newOwner` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+previousOwner = "The `previousOwner` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.liquidity_vault__paused_set]
+description = "`PausedSet(bool)` events emitted by the `liquidity_vault` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per PausedSet(bool) event"
+
+[table.liquidity_vault__paused_set.columns]
+paused = "The `paused` bool parameter - stored as exact text `'true'`/`'false'`, not a SQL boolean. `paused = true` and `AND`/`NOT` implicitly cast and work; `COALESCE`, `CASE`, `bool_and`/`bool_or` and `UNION` do not. Write `paused = 'true'` or `CAST(paused AS BOOLEAN)`. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.liquidity_vault__paused_set.footguns]
+bools = ["paused"]
+
+[table.liquidity_vault__protocol_fee_share_configured]
+description = "`ProtocolFeeShareConfigured(uint16)` events emitted by the `liquidity_vault` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per ProtocolFeeShareConfigured(uint16) event"
+
+[table.liquidity_vault__protocol_fee_share_configured.columns]
+protocolFeeShareBps = "The `protocolFeeShareBps` uint16 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.liquidity_vault__reimbursement_recorded]
+description = "`ReimbursementRecorded(bytes32,uint256,uint256)` events emitted by the `liquidity_vault` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per ReimbursementRecorded(bytes32,uint256,uint256) event"
+
+[table.liquidity_vault__reimbursement_recorded.columns]
+amountReceived = "The `amountReceived` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+exposureCleared = "The `exposureCleared` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+intentId = "The `intentId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.liquidity_vault__reimbursement_recorded.footguns]
+big_ints = [
+    "amountReceived",
+    "exposureCleared",
+]
+overflows_dec = [
+    "amountReceived",
+    "exposureCleared",
+]
+
+[table.liquidity_vault__reserve_floor_configured]
+description = "`ReserveFloorConfigured(uint16)` events emitted by the `liquidity_vault` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per ReserveFloorConfigured(uint16) event"
+
+[table.liquidity_vault__reserve_floor_configured.columns]
+reserveFloorBps = "The `reserveFloorBps` uint16 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.liquidity_vault__settlement_receiver_configured]
+description = "`SettlementReceiverConfigured(address)` events emitted by the `liquidity_vault` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per SettlementReceiverConfigured(address) event"
+
+[table.liquidity_vault__settlement_receiver_configured.columns]
+settlementReceiver = "The `settlementReceiver` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.liquidity_vault__transfer]
+description = "`Transfer(address,address,uint256)` events emitted by the `liquidity_vault` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per Transfer(address,address,uint256) event"
+
+[table.liquidity_vault__transfer.columns]
+from = "The `from` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+to = "The `to` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+value = "The `value` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.liquidity_vault__transfer.footguns]
+reserved_words = [
+    "from",
+    "to",
+]
+big_ints = ["value"]
+overflows_dec = ["value"]
+
+[table.liquidity_vault__treasury_configured]
+description = "`TreasuryConfigured(address)` events emitted by the `liquidity_vault` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per TreasuryConfigured(address) event"
+
+[table.liquidity_vault__treasury_configured.columns]
+treasury = "The `treasury` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.liquidity_vault__vault_initialized]
+description = "`VaultInitialized(address,address,uint16)` events emitted by the `liquidity_vault` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per VaultInitialized(address,address,uint16) event"
+
+[table.liquidity_vault__vault_initialized.columns]
+asset = "The `asset` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+owner = "The `owner` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+reserveFloorBps = "The `reserveFloorBps` uint16 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.liquidity_vault__withdraw]
+description = "`Withdraw(address,address,address,uint256,uint256)` events emitted by the `liquidity_vault` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per Withdraw(address,address,address,uint256,uint256) event"
+
+[table.liquidity_vault__withdraw.columns]
+assets = "The `assets` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+caller = "The `caller` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+receiver = "The `receiver` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+shareOwner = "The `shareOwner` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+shares = "The `shares` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.liquidity_vault__withdraw.footguns]
+big_ints = [
+    "assets",
+    "shares",
+]
+overflows_dec = [
+    "assets",
+    "shares",
+]
+
+[table.settlement_receiver__lp_reimbursed]
+description = "`LpReimbursed(bytes32,uint256)` events emitted by the `settlement_receiver` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per LpReimbursed(bytes32,uint256) event"
+
+[table.settlement_receiver__lp_reimbursed.columns]
+amount = "The `amount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+intentId = "The `intentId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.settlement_receiver__lp_reimbursed.footguns]
+big_ints = ["amount"]
+overflows_dec = ["amount"]
+
+[table.settlement_receiver__receiver_initialized]
+description = "`ReceiverInitialized(address,address,address)` events emitted by the `settlement_receiver` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per ReceiverInitialized(address,address,address) event"
+
+[table.settlement_receiver__receiver_initialized.columns]
+asset = "The `asset` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+owner = "The `owner` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+vault = "The `vault` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.settlement_receiver__recipient_paid_by_fallback]
+description = "`RecipientPaidByFallback(bytes32,address,uint256)` events emitted by the `settlement_receiver` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per RecipientPaidByFallback(bytes32,address,uint256) event"
+
+[table.settlement_receiver__recipient_paid_by_fallback.columns]
+amount = "The `amount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+intentId = "The `intentId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+recipient = "The `recipient` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.settlement_receiver__recipient_paid_by_fallback.footguns]
+big_ints = ["amount"]
+overflows_dec = ["amount"]
+
+[table.settlement_receiver__reporter_set]
+description = "`ReporterSet(address,bool)` events emitted by the `settlement_receiver` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per ReporterSet(address,bool) event"
+
+[table.settlement_receiver__reporter_set.columns]
+allowed = "The `allowed` bool parameter - stored as exact text `'true'`/`'false'`, not a SQL boolean. `allowed = true` and `AND`/`NOT` implicitly cast and work; `COALESCE`, `CASE`, `bool_and`/`bool_or` and `UNION` do not. Write `allowed = 'true'` or `CAST(allowed AS BOOLEAN)`. (seeded from the ABI - edit semantic.toml to improve this)"
+reporter = "The `reporter` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.settlement_receiver__reporter_set.footguns]
+bools = ["allowed"]
+
+[table.settlement_receiver_legacy__lp_reimbursed]
+description = "`LpReimbursed(bytes32,uint256)` events emitted by the `settlement_receiver_legacy` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per LpReimbursed(bytes32,uint256) event"
+
+[table.settlement_receiver_legacy__lp_reimbursed.columns]
+amount = "The `amount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+intentId = "The `intentId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.settlement_receiver_legacy__lp_reimbursed.footguns]
+big_ints = ["amount"]
+overflows_dec = ["amount"]
+
+[table.settlement_receiver_legacy__receiver_initialized]
+description = "`ReceiverInitialized(address,address,address)` events emitted by the `settlement_receiver_legacy` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per ReceiverInitialized(address,address,address) event"
+
+[table.settlement_receiver_legacy__receiver_initialized.columns]
+asset = "The `asset` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+owner = "The `owner` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+vault = "The `vault` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.settlement_receiver_legacy__recipient_paid_by_fallback]
+description = "`RecipientPaidByFallback(bytes32,address,uint256)` events emitted by the `settlement_receiver_legacy` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per RecipientPaidByFallback(bytes32,address,uint256) event"
+
+[table.settlement_receiver_legacy__recipient_paid_by_fallback.columns]
+amount = "The `amount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+intentId = "The `intentId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+recipient = "The `recipient` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.settlement_receiver_legacy__recipient_paid_by_fallback.footguns]
+big_ints = ["amount"]
+overflows_dec = ["amount"]
+
+[table.settlement_receiver_legacy__reporter_set]
+description = "`ReporterSet(address,bool)` events emitted by the `settlement_receiver_legacy` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per ReporterSet(address,bool) event"
+
+[table.settlement_receiver_legacy__reporter_set.columns]
+allowed = "The `allowed` bool parameter - stored as exact text `'true'`/`'false'`, not a SQL boolean. `allowed = true` and `AND`/`NOT` implicitly cast and work; `COALESCE`, `CASE`, `bool_and`/`bool_or` and `UNION` do not. Write `allowed = 'true'` or `CAST(allowed AS BOOLEAN)`. (seeded from the ABI - edit semantic.toml to improve this)"
+reporter = "The `reporter` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.settlement_receiver_legacy__reporter_set.footguns]
+bools = ["allowed"]
+
+[view.fills]
+description = "The subgraph's Fill entity: one row per FastFilled with amounts as decimals; id is txHash-logIndex."
+
+[view.settlements]
+description = "The subgraph's Settlement entity from both receivers, with outcome LP_REIMBURSED or RECIPIENT_FALLBACK."
+
+[view.intents]
+description = "The subgraph's Intent entity with fast_status and canonical_status derived from fills and settlements on this chain."
+
+[view.vault]
+description = "The subgraph's Vault entity per vault address: liquid balance, outstanding exposure, fees, deposit and withdrawal totals, paused."
+
+[view.protocol_state]
+description = "The subgraph's ProtocolState singleton: intent counts, pending settlement value, oldest unsettled timestamp, total fees."
+
+[view.pending_intents]
+description = "The agent's PendingIntents query: intents with no fill on this chain, oldest first."

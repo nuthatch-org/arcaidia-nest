@@ -1,0 +1,38 @@
+[nest]
+name = "arcaidia-nest"
+chain = "arc-testnet"
+chain_id = 5042002
+# Probed with `nuthatch doctor --address` on 2026-09-11. arc.io: 20,000-block getLogs by hand,
+# archive, but a per-second burst cap that 429s a cold start. drpc: 5,120 blocks, archive, batches
+# of 10. arc.network: 20 blocks. Three hosts so the backfill can spread; keep --window under 5000.
+rpc_urls = [
+    "https://rpc.testnet.arc.io",
+    "https://arc-testnet.drpc.org",
+    "https://rpc.testnet.arc.network",
+]
+schema_version = 1
+block_timestamps = true
+
+[[contracts]]
+alias = "intent_router"
+address = "0x58868465d14e0694d033bd511588ae90482b21cc"
+start_block = 61236176
+abi = "abis/intent_router.json"
+
+[[contracts]]
+alias = "liquidity_vault"
+address = "0xc74e693938dfbf7c11b787ba27cdde4c0215aaf1"
+start_block = 61414683
+abi = "abis/liquidity_vault.json"
+
+[[contracts]]
+alias = "settlement_receiver"
+address = "0x9a47a161ea8328b96ad976264d42790881570e71"
+start_block = 61414683
+abi = "abis/settlement_receiver.json"
+
+[[contracts]]
+alias = "settlement_receiver_legacy"
+address = "0xb634d0fda74bacf730b1ef50a32b4c83f13f11fc"
+start_block = 61052876
+abi = "abis/settlement_receiver_legacy.json"
