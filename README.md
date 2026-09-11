@@ -3,8 +3,8 @@
 A [Nuthatch](https://github.com/nightswatchhq/nuthatch) index of the Arcaidia contracts on **Arc
 Testnet** and **Ethereum Sepolia**, built from
 [immaxkent/arcaidia](https://github.com/immaxkent/arcaidia)'s subgraph manifests and ABIs. Same
-four contracts on each chain, same events the subgraph handles, plus six SQL views that reproduce
-the subgraph's entities by name.
+four contracts on each chain, every event in their ABIs (which includes the nine the subgraph
+handles), plus six SQL views that reproduce the subgraph's entities by name.
 
 It is hosted for the ETHOnline 2026 build. No API key, no quota, no rate limit, callable straight
 from a browser.
@@ -50,21 +50,22 @@ SELECT * FROM protocol_state
 **FillForIntent** (`fills(first: 1, where: { intentId: $id })`):
 
 ```sql
-SELECT id FROM fills WHERE intent_id = '0xce0c…742c' LIMIT 1
+SELECT id FROM fills WHERE intent_id = '0xce0cee4f0691b25c7d98a32623e98a4752571d7aefd8bceb35b44d14b7b9742c' LIMIT 1
 ```
 
 `_meta { block { timestamp } }` has no SQL equivalent because it is on every response already:
 `provenance.as_of` is the block the answer is as of, and `GET /ready` carries `last_block`, `tip`
 and `lag_blocks`.
 
-A response looks like this:
+A response, verbatim from the Sepolia nest on 11 September 2026 (`registry_hash` and `nid` cut):
 
 ```json
-{"rows":[{"id":"arcaidia","intents_created":3,"intents_filled":0,"intents_settled":0,
-          "pending_settlement_value":"0","oldest_unsettled_timestamp":0,"total_fees_earned":"0",
+{"cached":false,"count":1,"degraded":false,"degraded_tables":[],
+ "provenance":{"as_of":11681562,"entities":null,"sealed_through":11675226,"source":"hot+sealed"},
+ "rows":[{"id":"arcaidia","intents_created":3,"intents_filled":0,"intents_settled":0,
+          "oldest_unsettled_timestamp":0,"pending_settlement_value":"0","total_fees_earned":"0",
           "updated_at_block":11676357,"updated_at_timestamp":1789060836}],
- "count":1,"truncated":false,
- "provenance":{"as_of":11681538,"sealed_through":11675226,"source":"hot+sealed"}}
+ "tip_unavailable":false,"truncated":false}
 ```
 
 Amounts come back as strings because they are exact. Parse them with `BigInt`.
@@ -125,7 +126,7 @@ nuthatch dev --dir arcaidia-nest --window 4000 --finality-only --rpc https://arc
 
 That is the Arc nest. The public Arc endpoints throttle a cold start, so give it one good `--rpc`
 and a window of a few thousand blocks; the history is about 500,000 blocks and 30 events, and it
-catches up in under two minutes on dRPC.
+caught up in about three minutes on dRPC.
 
 For Sepolia, `nuthatch.sepolia.toml` is the same contracts on chain 11155111. A nest is one chain
 per process, so it runs from its own directory:
@@ -148,8 +149,9 @@ The Sepolia history is 21,000 blocks and catches up in three seconds on the publ
 | `settlement_receiver` | SettlementReceiver | `0x9a47a161ea8328b96Ad976264d42790881570E71` | 61,414,683 | 11,675,651 |
 | `settlement_receiver_legacy` | SettlementReceiver, retired 2026-09-10 | `0xb634d0fDa74BacF730B1eF50a32b4c83f13f11fC` | 61,052,876 | 11,660,148 |
 
-ABIs are vendored from the repository's `subgraph/abis/`. Every distinct event topic observed on
-chain, twenty of them, matches an event in those files; checked 11 September 2026.
+ABIs are vendored from the repository's `subgraph/abis/`, and are byte-for-byte the same event set
+as the three ABI files the builder sent on 11 September. Every distinct event topic observed on
+Arc, twenty of them, matches an event in those files; checked the same day.
 
 ## Help
 
