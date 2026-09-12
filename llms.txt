@@ -3,45 +3,40 @@
 A self-hosted blockchain index. Query it locally; there is no third-party API.
 
 ## Contracts
-- `intent_router` = 0x58868465d14e0694d033bd511588ae90482b21cc
-- `liquidity_vault` = 0xc74e693938dfbf7c11b787ba27cdde4c0215aaf1
-- `settlement_receiver` = 0x9a47a161ea8328b96ad976264d42790881570e71
-- `settlement_receiver_legacy` = 0xb634d0fda74bacf730b1ef50a32b4c83f13f11fc
+- `intent_router` = 0x69946ffbbe5f250c7357b89e4072f9eafc1c3ee6
+- `vault_factory` = 0xd458d83c874296ec4a29c47655ae47302879b23a
+- `settlement_receiver` = 0x8b93b54d6df61e9422d14c309f3c9ab950b920cd
 
 ## Tables (one per contract event)
 - `intent_router__destination_configured` - DestinationConfigured(uint256,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, chainId, receiver)
 - `intent_router__in_flight_released` - InFlightReleased(bytes32,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, amount)
-- `intent_router__intent_created` - IntentCreated(bytes32,address,address,address,uint256,uint256,uint256,uint16,uint64,uint256,bytes32) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, sender, recipient, inputToken, amount, sourceChainId, destinationChainId, maxFeeBps, deadline, nonce, settlementRef)
+- `intent_router__intent_created` - IntentCreated(bytes32,address,address,uint8,address,uint256,uint256,uint256,uint16,uint64,uint256,address,uint256,bytes32) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, sender, recipient, intentVersion, inputToken, amount, sourceChainId, destinationChainId, maxFeeBps, deadline, nonce, tokenOut, targetMinOut, settlementRef)
 - `intent_router__limits_configured` - LimitsConfigured(uint256,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, maxIntentAmount, maxInFlightValue)
 - `intent_router__owner_transferred` - OwnerTransferred(address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, previousOwner, newOwner)
 - `intent_router__paused_set` - PausedSet(bool) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, paused)
 - `intent_router__router_initialized` - RouterInitialized(address,address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, owner, settlementAsset, settlementInitiator)
-- `liquidity_vault__approval` - Approval(address,address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, owner, spender, value)
-- `liquidity_vault__authorised_signer_set` - AuthorisedSignerSet(address,bool) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, signer, allowed)
+- `intent_router__trade_intents_allowed_set` - TradeIntentsAllowedSet(bool) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, allowed)
+- `liquidity_vault__delivered_via_swap` - DeliveredViaSwap(bytes32,address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, tokenOut, amountOut)
 - `liquidity_vault__deposit` - Deposit(address,address,uint256,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, caller, receiver, assets, shares)
-- `liquidity_vault__fast_filled` - FastFilled(bytes32,address,address,uint256,uint256,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, recipient, signer, inputAmount, outputAmount, feeAmount)
+- `liquidity_vault__fast_filled` - FastFilled(bytes32,address,address,uint256,uint256,uint256,uint16) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, recipient, signer, inputAmount, outputAmount, feeAmount, feeBps)
+- `liquidity_vault__fee_policy_configured` - FeePolicyConfigured((uint16,uint16,uint16,uint16,uint16,uint16,uint16)) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, policy)
 - `liquidity_vault__fees_accrued` - FeesAccrued(bytes32,uint256,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, toProtocol, toLps)
-- `liquidity_vault__fees_withdrawn` - FeesWithdrawn(address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, treasury, amount)
-- `liquidity_vault__fill_limits_configured` - FillLimitsConfigured(uint16,uint16,uint16) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, maxFillBps, maxExposureBps, maxFeeBps)
-- `liquidity_vault__fill_recorded` - FillRecorded(bytes32,address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, recipient, outputAmount)
-- `liquidity_vault__owner_transferred` - OwnerTransferred(address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, previousOwner, newOwner)
+- `liquidity_vault__fill_limits_configured` - FillLimitsConfigured(uint16,uint16) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, maxFillBps, maxExposureBps)
 - `liquidity_vault__paused_set` - PausedSet(bool) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, paused)
-- `liquidity_vault__protocol_fee_share_configured` - ProtocolFeeShareConfigured(uint16) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, protocolFeeShareBps)
 - `liquidity_vault__reimbursement_recorded` - ReimbursementRecorded(bytes32,uint256,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, amountReceived, exposureCleared)
 - `liquidity_vault__reserve_floor_configured` - ReserveFloorConfigured(uint16) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, reserveFloorBps)
-- `liquidity_vault__settlement_receiver_configured` - SettlementReceiverConfigured(address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, settlementReceiver)
-- `liquidity_vault__transfer` - Transfer(address,address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, from, to, value)
-- `liquidity_vault__treasury_configured` - TreasuryConfigured(address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, treasury)
+- `liquidity_vault__swap_fell_back` - SwapFellBack(bytes32,address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, tokenOut, usdcDelivered)
 - `liquidity_vault__vault_initialized` - VaultInitialized(address,address,uint16) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, owner, asset, reserveFloorBps)
 - `liquidity_vault__withdraw` - Withdraw(address,address,address,uint256,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, caller, receiver, shareOwner, assets, shares)
-- `settlement_receiver__lp_reimbursed` - LpReimbursed(bytes32,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, amount)
-- `settlement_receiver__receiver_initialized` - ReceiverInitialized(address,address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, owner, asset, vault)
+- `settlement_receiver__held_for_vault` - HeldForVault(bytes32,address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, vault, amount)
+- `settlement_receiver__lp_reimbursed` - LpReimbursed(bytes32,address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, vault, amount)
+- `settlement_receiver__receiver_initialized` - ReceiverInitialized(address,address,address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, owner, asset, market, messageTransmitter)
 - `settlement_receiver__recipient_paid_by_fallback` - RecipientPaidByFallback(bytes32,address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, recipient, amount)
 - `settlement_receiver__reporter_set` - ReporterSet(address,bool) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, reporter, allowed)
-- `settlement_receiver_legacy__lp_reimbursed` - LpReimbursed(bytes32,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, amount)
-- `settlement_receiver_legacy__receiver_initialized` - ReceiverInitialized(address,address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, owner, asset, vault)
-- `settlement_receiver_legacy__recipient_paid_by_fallback` - RecipientPaidByFallback(bytes32,address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, recipient, amount)
-- `settlement_receiver_legacy__reporter_set` - ReporterSet(address,bool) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, reporter, allowed)
+- `settlement_receiver__settled_with_proof` - SettledWithProof(bytes32,uint8,uint256,bytes32) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, outcome, amount, cctpNonce)
+- `vault_factory__factory_initialized` - FactoryInitialized(address,address,address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, owner, asset, market, settlementReceiver)
+- `vault_factory__owner_transferred` - OwnerTransferred(address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, previousOwner, newOwner)
+- `vault_factory__vault_created` - VaultCreated(address,address,string,(uint16,uint16,uint16,uint16,uint16,uint16,uint16),uint16,uint16,uint16) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, vault, owner, label, policy, reserveFloorBps, maxFillBps, maxExposureBps)
 
 ## Live HTTP API (run `nuthatch dev`)
 - `GET /`                    index status

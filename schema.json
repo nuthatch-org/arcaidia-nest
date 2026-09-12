@@ -1,5 +1,5 @@
 {
-  "registry_hash": "0x0ea100bb0326397631aa8b8a5d589b9b5f00c2b1412d608d5ea123133ec98061",
+  "registry_hash": "0xf24c1734d6e87e5aa8d3730cb700c10d737e8c53a43952f3f114ce4bb619498a",
   "tables": [
     {
       "alias": "intent_router",
@@ -190,6 +190,12 @@
         },
         {
           "indexed": false,
+          "name": "intentVersion",
+          "sol_type": "uint8",
+          "storage": "u64"
+        },
+        {
+          "indexed": false,
           "name": "inputToken",
           "sol_type": "address",
           "storage": "address"
@@ -232,14 +238,26 @@
         },
         {
           "indexed": false,
+          "name": "tokenOut",
+          "sol_type": "address",
+          "storage": "address"
+        },
+        {
+          "indexed": false,
+          "name": "targetMinOut",
+          "sol_type": "uint256",
+          "storage": "word32"
+        },
+        {
+          "indexed": false,
           "name": "settlementRef",
           "sol_type": "bytes32",
           "storage": "fixed_bytes"
         }
       ],
-      "event": "IntentCreated(bytes32,address,address,address,uint256,uint256,uint256,uint16,uint64,uint256,bytes32)",
+      "event": "IntentCreated(bytes32,address,address,uint8,address,uint256,uint256,uint256,uint16,uint64,uint256,address,uint256,bytes32)",
       "table": "intent_router__intent_created",
-      "topic0": "0x1524d202a2d71472733367a7592ce01b20ceca01ade6103f16f6082a2bf44f24"
+      "topic0": "0xd1d24928bb3f42583d778c9d8412e63bb8b28122ac61a7d4b0fc97f914aafb0e"
     },
     {
       "alias": "intent_router",
@@ -490,7 +508,7 @@
       "topic0": "0x911c55579a6b84a09db0e4b0ec43771bafe7fc2d49a426d516fab550f4dce940"
     },
     {
-      "alias": "liquidity_vault",
+      "alias": "intent_router",
       "columns": [
         {
           "indexed": false,
@@ -535,27 +553,15 @@
           "storage": "u64"
         },
         {
-          "indexed": true,
-          "name": "owner",
-          "sol_type": "address",
-          "storage": "address"
-        },
-        {
-          "indexed": true,
-          "name": "spender",
-          "sol_type": "address",
-          "storage": "address"
-        },
-        {
           "indexed": false,
-          "name": "value",
-          "sol_type": "uint256",
-          "storage": "word32"
+          "name": "allowed",
+          "sol_type": "bool",
+          "storage": "bool"
         }
       ],
-      "event": "Approval(address,address,uint256)",
-      "table": "liquidity_vault__approval",
-      "topic0": "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925"
+      "event": "TradeIntentsAllowedSet(bool)",
+      "table": "intent_router__trade_intents_allowed_set",
+      "topic0": "0x1eceaf5cdf7057564fbfe7e6306e3f6a38a50955da16a34ab86e2247225079c2"
     },
     {
       "alias": "liquidity_vault",
@@ -604,20 +610,26 @@
         },
         {
           "indexed": true,
-          "name": "signer",
+          "name": "intentId",
+          "sol_type": "bytes32",
+          "storage": "fixed_bytes"
+        },
+        {
+          "indexed": true,
+          "name": "tokenOut",
           "sol_type": "address",
           "storage": "address"
         },
         {
           "indexed": false,
-          "name": "allowed",
-          "sol_type": "bool",
-          "storage": "bool"
+          "name": "amountOut",
+          "sol_type": "uint256",
+          "storage": "word32"
         }
       ],
-      "event": "AuthorisedSignerSet(address,bool)",
-      "table": "liquidity_vault__authorised_signer_set",
-      "topic0": "0xd65fbafa6296fda02aa0488b379719cda7e363c41e177e4ee69276404dfd6753"
+      "event": "DeliveredViaSwap(bytes32,address,uint256)",
+      "table": "liquidity_vault__delivered_via_swap",
+      "topic0": "0xf58654566c7b20f0be9c8319b778fdd5e2209e4f9357659fecef01bf027de7c5"
     },
     {
       "alias": "liquidity_vault",
@@ -773,11 +785,73 @@
           "name": "feeAmount",
           "sol_type": "uint256",
           "storage": "word32"
+        },
+        {
+          "indexed": false,
+          "name": "feeBps",
+          "sol_type": "uint16",
+          "storage": "u64"
         }
       ],
-      "event": "FastFilled(bytes32,address,address,uint256,uint256,uint256)",
+      "event": "FastFilled(bytes32,address,address,uint256,uint256,uint256,uint16)",
       "table": "liquidity_vault__fast_filled",
-      "topic0": "0xa1bc4fb0dbe6266c1498a88dc52d0c71953c81602e8690a5d1298a4dd165a377"
+      "topic0": "0x913a8c0940a12a71367f3d584bfa35a55f990bc1daa07d08d519485266bd4421"
+    },
+    {
+      "alias": "liquidity_vault",
+      "columns": [
+        {
+          "indexed": false,
+          "name": "block_number",
+          "sol_type": "implicit",
+          "storage": "u64"
+        },
+        {
+          "indexed": false,
+          "name": "block_hash",
+          "sol_type": "implicit",
+          "storage": "bytes32"
+        },
+        {
+          "indexed": false,
+          "name": "block_timestamp",
+          "sol_type": "implicit",
+          "storage": "u64"
+        },
+        {
+          "indexed": false,
+          "name": "tx_hash",
+          "sol_type": "implicit",
+          "storage": "bytes32"
+        },
+        {
+          "indexed": false,
+          "name": "log_index",
+          "sol_type": "implicit",
+          "storage": "u64"
+        },
+        {
+          "indexed": false,
+          "name": "address",
+          "sol_type": "implicit",
+          "storage": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_seq",
+          "sol_type": "implicit",
+          "storage": "u64"
+        },
+        {
+          "indexed": false,
+          "name": "policy",
+          "sol_type": "tuple",
+          "storage": "json"
+        }
+      ],
+      "event": "FeePolicyConfigured((uint16,uint16,uint16,uint16,uint16,uint16,uint16))",
+      "table": "liquidity_vault__fee_policy_configured",
+      "topic0": "0x132b9f904a99676535324089f64b6df7c79dcfc94e89809acb571b45374cc71b"
     },
     {
       "alias": "liquidity_vault",
@@ -893,68 +967,6 @@
           "storage": "u64"
         },
         {
-          "indexed": true,
-          "name": "treasury",
-          "sol_type": "address",
-          "storage": "address"
-        },
-        {
-          "indexed": false,
-          "name": "amount",
-          "sol_type": "uint256",
-          "storage": "word32"
-        }
-      ],
-      "event": "FeesWithdrawn(address,uint256)",
-      "table": "liquidity_vault__fees_withdrawn",
-      "topic0": "0xc0819c13be868895eb93e40eaceb96de976442fa1d404e5c55f14bb65a8c489a"
-    },
-    {
-      "alias": "liquidity_vault",
-      "columns": [
-        {
-          "indexed": false,
-          "name": "block_number",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "block_hash",
-          "sol_type": "implicit",
-          "storage": "bytes32"
-        },
-        {
-          "indexed": false,
-          "name": "block_timestamp",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "tx_hash",
-          "sol_type": "implicit",
-          "storage": "bytes32"
-        },
-        {
-          "indexed": false,
-          "name": "log_index",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "address",
-          "sol_type": "implicit",
-          "storage": "address"
-        },
-        {
-          "indexed": false,
-          "name": "_seq",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
           "indexed": false,
           "name": "maxFillBps",
           "sol_type": "uint16",
@@ -965,147 +977,11 @@
           "name": "maxExposureBps",
           "sol_type": "uint16",
           "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "maxFeeBps",
-          "sol_type": "uint16",
-          "storage": "u64"
         }
       ],
-      "event": "FillLimitsConfigured(uint16,uint16,uint16)",
+      "event": "FillLimitsConfigured(uint16,uint16)",
       "table": "liquidity_vault__fill_limits_configured",
-      "topic0": "0xc7c3e4a42349014e2278f3eb3bb7f4da72c1c2ef1da0aba029fd81c8ca8f68e4"
-    },
-    {
-      "alias": "liquidity_vault",
-      "columns": [
-        {
-          "indexed": false,
-          "name": "block_number",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "block_hash",
-          "sol_type": "implicit",
-          "storage": "bytes32"
-        },
-        {
-          "indexed": false,
-          "name": "block_timestamp",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "tx_hash",
-          "sol_type": "implicit",
-          "storage": "bytes32"
-        },
-        {
-          "indexed": false,
-          "name": "log_index",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "address",
-          "sol_type": "implicit",
-          "storage": "address"
-        },
-        {
-          "indexed": false,
-          "name": "_seq",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": true,
-          "name": "intentId",
-          "sol_type": "bytes32",
-          "storage": "fixed_bytes"
-        },
-        {
-          "indexed": true,
-          "name": "recipient",
-          "sol_type": "address",
-          "storage": "address"
-        },
-        {
-          "indexed": false,
-          "name": "outputAmount",
-          "sol_type": "uint256",
-          "storage": "word32"
-        }
-      ],
-      "event": "FillRecorded(bytes32,address,uint256)",
-      "table": "liquidity_vault__fill_recorded",
-      "topic0": "0xba090b78724c6814b72ad732c989a10508e9229a71699fa1940bbbe9fa75e611"
-    },
-    {
-      "alias": "liquidity_vault",
-      "columns": [
-        {
-          "indexed": false,
-          "name": "block_number",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "block_hash",
-          "sol_type": "implicit",
-          "storage": "bytes32"
-        },
-        {
-          "indexed": false,
-          "name": "block_timestamp",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "tx_hash",
-          "sol_type": "implicit",
-          "storage": "bytes32"
-        },
-        {
-          "indexed": false,
-          "name": "log_index",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "address",
-          "sol_type": "implicit",
-          "storage": "address"
-        },
-        {
-          "indexed": false,
-          "name": "_seq",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": true,
-          "name": "previousOwner",
-          "sol_type": "address",
-          "storage": "address"
-        },
-        {
-          "indexed": true,
-          "name": "newOwner",
-          "sol_type": "address",
-          "storage": "address"
-        }
-      ],
-      "event": "OwnerTransferred(address,address)",
-      "table": "liquidity_vault__owner_transferred",
-      "topic0": "0x8934ce4adea8d9ce0d714d2c22b86790e41b7731c84b926fbbdc1d40ff6533c9"
+      "topic0": "0xf9686eab8718dcda53ff5768cd9c245e3886733884bf3a07518cbffe73472a14"
     },
     {
       "alias": "liquidity_vault",
@@ -1162,62 +1038,6 @@
       "event": "PausedSet(bool)",
       "table": "liquidity_vault__paused_set",
       "topic0": "0x40db37ff5c0bdc2c427fbb2078c8f24afea940abac0e3c23bb4ea3bf2da2b212"
-    },
-    {
-      "alias": "liquidity_vault",
-      "columns": [
-        {
-          "indexed": false,
-          "name": "block_number",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "block_hash",
-          "sol_type": "implicit",
-          "storage": "bytes32"
-        },
-        {
-          "indexed": false,
-          "name": "block_timestamp",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "tx_hash",
-          "sol_type": "implicit",
-          "storage": "bytes32"
-        },
-        {
-          "indexed": false,
-          "name": "log_index",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "address",
-          "sol_type": "implicit",
-          "storage": "address"
-        },
-        {
-          "indexed": false,
-          "name": "_seq",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "protocolFeeShareBps",
-          "sol_type": "uint16",
-          "storage": "u64"
-        }
-      ],
-      "event": "ProtocolFeeShareConfigured(uint16)",
-      "table": "liquidity_vault__protocol_fee_share_configured",
-      "topic0": "0x3ac0042d2e3b5c557e1097d79aba405b815b0dea4b552ec03d88ca931897b4d8"
     },
     {
       "alias": "liquidity_vault",
@@ -1389,139 +1209,27 @@
           "storage": "u64"
         },
         {
-          "indexed": false,
-          "name": "settlementReceiver",
-          "sol_type": "address",
-          "storage": "address"
-        }
-      ],
-      "event": "SettlementReceiverConfigured(address)",
-      "table": "liquidity_vault__settlement_receiver_configured",
-      "topic0": "0x9d21e59c76becd41c65304cc2a327d91c58782df0a0c4107437c2fec4ed58bf5"
-    },
-    {
-      "alias": "liquidity_vault",
-      "columns": [
-        {
-          "indexed": false,
-          "name": "block_number",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "block_hash",
-          "sol_type": "implicit",
-          "storage": "bytes32"
-        },
-        {
-          "indexed": false,
-          "name": "block_timestamp",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "tx_hash",
-          "sol_type": "implicit",
-          "storage": "bytes32"
-        },
-        {
-          "indexed": false,
-          "name": "log_index",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "address",
-          "sol_type": "implicit",
-          "storage": "address"
-        },
-        {
-          "indexed": false,
-          "name": "_seq",
-          "sol_type": "implicit",
-          "storage": "u64"
+          "indexed": true,
+          "name": "intentId",
+          "sol_type": "bytes32",
+          "storage": "fixed_bytes"
         },
         {
           "indexed": true,
-          "name": "from",
-          "sol_type": "address",
-          "storage": "address"
-        },
-        {
-          "indexed": true,
-          "name": "to",
+          "name": "tokenOut",
           "sol_type": "address",
           "storage": "address"
         },
         {
           "indexed": false,
-          "name": "value",
+          "name": "usdcDelivered",
           "sol_type": "uint256",
           "storage": "word32"
         }
       ],
-      "event": "Transfer(address,address,uint256)",
-      "table": "liquidity_vault__transfer",
-      "topic0": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
-    },
-    {
-      "alias": "liquidity_vault",
-      "columns": [
-        {
-          "indexed": false,
-          "name": "block_number",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "block_hash",
-          "sol_type": "implicit",
-          "storage": "bytes32"
-        },
-        {
-          "indexed": false,
-          "name": "block_timestamp",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "tx_hash",
-          "sol_type": "implicit",
-          "storage": "bytes32"
-        },
-        {
-          "indexed": false,
-          "name": "log_index",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "address",
-          "sol_type": "implicit",
-          "storage": "address"
-        },
-        {
-          "indexed": false,
-          "name": "_seq",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "treasury",
-          "sol_type": "address",
-          "storage": "address"
-        }
-      ],
-      "event": "TreasuryConfigured(address)",
-      "table": "liquidity_vault__treasury_configured",
-      "topic0": "0xd2c3a8a49d41ff18659f0d8243687aad2715daa262638b47a8e6b79c1efca74a"
+      "event": "SwapFellBack(bytes32,address,uint256)",
+      "table": "liquidity_vault__swap_fell_back",
+      "topic0": "0x1a3124ef77cbf2867d4db3f637446f2fbf3145150825a92a326e43c9330d9332"
     },
     {
       "alias": "liquidity_vault",
@@ -1723,15 +1431,89 @@
           "storage": "fixed_bytes"
         },
         {
+          "indexed": true,
+          "name": "vault",
+          "sol_type": "address",
+          "storage": "address"
+        },
+        {
           "indexed": false,
           "name": "amount",
           "sol_type": "uint256",
           "storage": "word32"
         }
       ],
-      "event": "LpReimbursed(bytes32,uint256)",
+      "event": "HeldForVault(bytes32,address,uint256)",
+      "table": "settlement_receiver__held_for_vault",
+      "topic0": "0x1d8c663241736b47c19726eeb1db759328887aa684a763428b912e8eaf61eefe"
+    },
+    {
+      "alias": "settlement_receiver",
+      "columns": [
+        {
+          "indexed": false,
+          "name": "block_number",
+          "sol_type": "implicit",
+          "storage": "u64"
+        },
+        {
+          "indexed": false,
+          "name": "block_hash",
+          "sol_type": "implicit",
+          "storage": "bytes32"
+        },
+        {
+          "indexed": false,
+          "name": "block_timestamp",
+          "sol_type": "implicit",
+          "storage": "u64"
+        },
+        {
+          "indexed": false,
+          "name": "tx_hash",
+          "sol_type": "implicit",
+          "storage": "bytes32"
+        },
+        {
+          "indexed": false,
+          "name": "log_index",
+          "sol_type": "implicit",
+          "storage": "u64"
+        },
+        {
+          "indexed": false,
+          "name": "address",
+          "sol_type": "implicit",
+          "storage": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_seq",
+          "sol_type": "implicit",
+          "storage": "u64"
+        },
+        {
+          "indexed": true,
+          "name": "intentId",
+          "sol_type": "bytes32",
+          "storage": "fixed_bytes"
+        },
+        {
+          "indexed": true,
+          "name": "vault",
+          "sol_type": "address",
+          "storage": "address"
+        },
+        {
+          "indexed": false,
+          "name": "amount",
+          "sol_type": "uint256",
+          "storage": "word32"
+        }
+      ],
+      "event": "LpReimbursed(bytes32,address,uint256)",
       "table": "settlement_receiver__lp_reimbursed",
-      "topic0": "0xfcb96fda39245c2b9cf002fa6b4d2cd7d96df6cbfd9098322e71fda268bb78dc"
+      "topic0": "0xf96364cddf96035db4fd02a836cbe2e707c3ce980179bb4c623405c6a7efb22c"
     },
     {
       "alias": "settlement_receiver",
@@ -1792,14 +1574,20 @@
         },
         {
           "indexed": false,
-          "name": "vault",
+          "name": "market",
+          "sol_type": "address",
+          "storage": "address"
+        },
+        {
+          "indexed": false,
+          "name": "messageTransmitter",
           "sol_type": "address",
           "storage": "address"
         }
       ],
-      "event": "ReceiverInitialized(address,address,address)",
+      "event": "ReceiverInitialized(address,address,address,address)",
       "table": "settlement_receiver__receiver_initialized",
-      "topic0": "0xca58feca31f66b946eb3a356de31c9042c65ee167e6c75c0ea3c28a1a30a249d"
+      "topic0": "0xab5c5577af543ee8d819a4fb18af4f8dabad9af82ea6816ff66801ad32976f32"
     },
     {
       "alias": "settlement_receiver",
@@ -1932,7 +1720,7 @@
       "topic0": "0x49414e0a37c19781141fced7b2dc68c560d888c72174623b7bba993149d9064d"
     },
     {
-      "alias": "settlement_receiver_legacy",
+      "alias": "settlement_receiver",
       "columns": [
         {
           "indexed": false,
@@ -1984,17 +1772,29 @@
         },
         {
           "indexed": false,
+          "name": "outcome",
+          "sol_type": "uint8",
+          "storage": "u64"
+        },
+        {
+          "indexed": false,
           "name": "amount",
           "sol_type": "uint256",
           "storage": "word32"
+        },
+        {
+          "indexed": false,
+          "name": "cctpNonce",
+          "sol_type": "bytes32",
+          "storage": "fixed_bytes"
         }
       ],
-      "event": "LpReimbursed(bytes32,uint256)",
-      "table": "settlement_receiver_legacy__lp_reimbursed",
-      "topic0": "0xfcb96fda39245c2b9cf002fa6b4d2cd7d96df6cbfd9098322e71fda268bb78dc"
+      "event": "SettledWithProof(bytes32,uint8,uint256,bytes32)",
+      "table": "settlement_receiver__settled_with_proof",
+      "topic0": "0xf1573fd1654e52c5ea8d1135770c7b800efe3fca27dccb984f3403669aa531ba"
     },
     {
-      "alias": "settlement_receiver_legacy",
+      "alias": "vault_factory",
       "columns": [
         {
           "indexed": false,
@@ -2052,144 +1852,174 @@
         },
         {
           "indexed": false,
+          "name": "market",
+          "sol_type": "address",
+          "storage": "address"
+        },
+        {
+          "indexed": false,
+          "name": "settlementReceiver",
+          "sol_type": "address",
+          "storage": "address"
+        }
+      ],
+      "event": "FactoryInitialized(address,address,address,address)",
+      "table": "vault_factory__factory_initialized",
+      "topic0": "0xb005081905f3681bd2508eb34b0b21cd12f24c2390d86332dbcc885c29dff291"
+    },
+    {
+      "alias": "vault_factory",
+      "columns": [
+        {
+          "indexed": false,
+          "name": "block_number",
+          "sol_type": "implicit",
+          "storage": "u64"
+        },
+        {
+          "indexed": false,
+          "name": "block_hash",
+          "sol_type": "implicit",
+          "storage": "bytes32"
+        },
+        {
+          "indexed": false,
+          "name": "block_timestamp",
+          "sol_type": "implicit",
+          "storage": "u64"
+        },
+        {
+          "indexed": false,
+          "name": "tx_hash",
+          "sol_type": "implicit",
+          "storage": "bytes32"
+        },
+        {
+          "indexed": false,
+          "name": "log_index",
+          "sol_type": "implicit",
+          "storage": "u64"
+        },
+        {
+          "indexed": false,
+          "name": "address",
+          "sol_type": "implicit",
+          "storage": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_seq",
+          "sol_type": "implicit",
+          "storage": "u64"
+        },
+        {
+          "indexed": true,
+          "name": "previousOwner",
+          "sol_type": "address",
+          "storage": "address"
+        },
+        {
+          "indexed": true,
+          "name": "newOwner",
+          "sol_type": "address",
+          "storage": "address"
+        }
+      ],
+      "event": "OwnerTransferred(address,address)",
+      "table": "vault_factory__owner_transferred",
+      "topic0": "0x8934ce4adea8d9ce0d714d2c22b86790e41b7731c84b926fbbdc1d40ff6533c9"
+    },
+    {
+      "alias": "vault_factory",
+      "columns": [
+        {
+          "indexed": false,
+          "name": "block_number",
+          "sol_type": "implicit",
+          "storage": "u64"
+        },
+        {
+          "indexed": false,
+          "name": "block_hash",
+          "sol_type": "implicit",
+          "storage": "bytes32"
+        },
+        {
+          "indexed": false,
+          "name": "block_timestamp",
+          "sol_type": "implicit",
+          "storage": "u64"
+        },
+        {
+          "indexed": false,
+          "name": "tx_hash",
+          "sol_type": "implicit",
+          "storage": "bytes32"
+        },
+        {
+          "indexed": false,
+          "name": "log_index",
+          "sol_type": "implicit",
+          "storage": "u64"
+        },
+        {
+          "indexed": false,
+          "name": "address",
+          "sol_type": "implicit",
+          "storage": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_seq",
+          "sol_type": "implicit",
+          "storage": "u64"
+        },
+        {
+          "indexed": true,
           "name": "vault",
           "sol_type": "address",
           "storage": "address"
-        }
-      ],
-      "event": "ReceiverInitialized(address,address,address)",
-      "table": "settlement_receiver_legacy__receiver_initialized",
-      "topic0": "0xca58feca31f66b946eb3a356de31c9042c65ee167e6c75c0ea3c28a1a30a249d"
-    },
-    {
-      "alias": "settlement_receiver_legacy",
-      "columns": [
-        {
-          "indexed": false,
-          "name": "block_number",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "block_hash",
-          "sol_type": "implicit",
-          "storage": "bytes32"
-        },
-        {
-          "indexed": false,
-          "name": "block_timestamp",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "tx_hash",
-          "sol_type": "implicit",
-          "storage": "bytes32"
-        },
-        {
-          "indexed": false,
-          "name": "log_index",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "address",
-          "sol_type": "implicit",
-          "storage": "address"
-        },
-        {
-          "indexed": false,
-          "name": "_seq",
-          "sol_type": "implicit",
-          "storage": "u64"
         },
         {
           "indexed": true,
-          "name": "intentId",
-          "sol_type": "bytes32",
-          "storage": "fixed_bytes"
-        },
-        {
-          "indexed": true,
-          "name": "recipient",
+          "name": "owner",
           "sol_type": "address",
           "storage": "address"
         },
         {
           "indexed": false,
-          "name": "amount",
-          "sol_type": "uint256",
-          "storage": "word32"
+          "name": "label",
+          "sol_type": "string",
+          "storage": "string"
+        },
+        {
+          "indexed": false,
+          "name": "policy",
+          "sol_type": "tuple",
+          "storage": "json"
+        },
+        {
+          "indexed": false,
+          "name": "reserveFloorBps",
+          "sol_type": "uint16",
+          "storage": "u64"
+        },
+        {
+          "indexed": false,
+          "name": "maxFillBps",
+          "sol_type": "uint16",
+          "storage": "u64"
+        },
+        {
+          "indexed": false,
+          "name": "maxExposureBps",
+          "sol_type": "uint16",
+          "storage": "u64"
         }
       ],
-      "event": "RecipientPaidByFallback(bytes32,address,uint256)",
-      "table": "settlement_receiver_legacy__recipient_paid_by_fallback",
-      "topic0": "0x32c90dd4603200d7db6cf049cafa78e7bc546ef80c1b26cd93901092509d204d"
-    },
-    {
-      "alias": "settlement_receiver_legacy",
-      "columns": [
-        {
-          "indexed": false,
-          "name": "block_number",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "block_hash",
-          "sol_type": "implicit",
-          "storage": "bytes32"
-        },
-        {
-          "indexed": false,
-          "name": "block_timestamp",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "tx_hash",
-          "sol_type": "implicit",
-          "storage": "bytes32"
-        },
-        {
-          "indexed": false,
-          "name": "log_index",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": false,
-          "name": "address",
-          "sol_type": "implicit",
-          "storage": "address"
-        },
-        {
-          "indexed": false,
-          "name": "_seq",
-          "sol_type": "implicit",
-          "storage": "u64"
-        },
-        {
-          "indexed": true,
-          "name": "reporter",
-          "sol_type": "address",
-          "storage": "address"
-        },
-        {
-          "indexed": false,
-          "name": "allowed",
-          "sol_type": "bool",
-          "storage": "bool"
-        }
-      ],
-      "event": "ReporterSet(address,bool)",
-      "table": "settlement_receiver_legacy__reporter_set",
-      "topic0": "0x49414e0a37c19781141fced7b2dc68c560d888c72174623b7bba993149d9064d"
+      "event": "VaultCreated(address,address,string,(uint16,uint16,uint16,uint16,uint16,uint16,uint16),uint16,uint16,uint16)",
+      "table": "vault_factory__vault_created",
+      "topic0": "0x5d1702231889f3c1d91c0a62ed8ccf659331e3a71a96e1ec8e9e6055c948dce6"
     }
   ]
 }

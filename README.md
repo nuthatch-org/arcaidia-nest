@@ -1,10 +1,12 @@
 # arcaidia-nest
 
 A [Nuthatch](https://github.com/nightswatchhq/nuthatch) index of the Arcaidia contracts on **Arc
-Testnet** and **Ethereum Sepolia**, built from
-[immaxkent/arcaidia](https://github.com/immaxkent/arcaidia)'s subgraph manifests and ABIs. Same
-four contracts on each chain, every event in their ABIs (which includes the nine the subgraph
-handles), plus six SQL views that reproduce the subgraph's entities by name.
+Testnet** and **Ethereum Sepolia**, built from the Arcaidia v2 indexer pack (WP-27 / WP-31).
+Three fixed contracts plus **every vault the factory creates**, discovered automatically, and ten
+SQL views that reproduce the subgraph's entities by name.
+
+**v2 since 12 September 2026.** The v1 contracts are still indexed and served, read-only, at
+`/arcaidia-arc-v1` and `/arcaidia-sepolia-v1`.
 
 It is hosted for the ETHOnline 2026 build. No API key, no quota, no rate limit, callable straight
 from a browser.
@@ -15,6 +17,9 @@ from a browser.
 | --- | --- |
 | Arc Testnet (5042002) | `https://hackathon.89.167.109.4.sslip.io/arcaidia-arc` |
 | Ethereum Sepolia (11155111) | `https://hackathon.89.167.109.4.sslip.io/arcaidia-sepolia` |
+| v1, history only | the same two with `-v1` appended |
+
+`/arcaidia-v2-arc` and `/arcaidia-v2-sepolia` are aliases of the first two.
 
 Every route below is relative to one of those. `Access-Control-Allow-Origin: *` is set, so
 `fetch()` from any page works.
@@ -72,14 +77,27 @@ Amounts come back as strings because they are exact. Parse them with `BigInt`.
 
 ## The views
 
-| View | Subgraph entity | Notes |
-| --- | --- | --- |
-| `intents` | `Intent` | `fast_status` and `canonical_status` derived from fills and settlements on this chain |
-| `fills` | `Fill` | one row per `FastFilled`; `id` is `txHash-logIndex` like the mapping's `eventId` |
-| `settlements` | `Settlement` | both receivers, current and retired; `outcome` is `LP_REIMBURSED` or `RECIPIENT_FALLBACK` |
-| `vault` | `Vault` | per vault address; the same arithmetic as `vault.ts`, computed from events |
-| `protocol_state` | `ProtocolState` | the singleton; `id` is always `arcaidia` |
-| `pending_intents` | the agent's query | `intents` with no fill, oldest first |
+| View | Notes |
+| --- | --- |
+| `intents` | plus `intent_version`, `token_out`, `target_min_out`, `fill_vault`, `settlement_outcome`. `nonce` is the raw column, so it is populated |
+| `pending_intents` | `intents` with no fill, oldest first |
+| `vaults` | one row per factory vault: identity, the seven policy columns, the three caps, folded balances, `utilisation_bps`, `current_fee_bps` |
+| `vault` | the House Vault row, kept as the v1 alias |
+| `fills` | plus `vault`, `fee_bps`, `fee_amount`, `input_amount`, `delivered_via`, `token_out`, `amount_out` |
+| `settlements` | `outcome` is `LP_REIMBURSED`, `RECIPIENT_FALLBACK` or `HELD_FOR_VAULT`, plus `via_proof`, `cctp_nonce`, `held_for_vault` |
+| `fee_snapshots` | one row per vault state change, with the balances, utilisation and fee at that point |
+| `protocol_state` | plus `vault_count`, `trade_intents_created`, `intents_fallen_back` |
+| `vault_policy`, `vault_flows` | helpers the three above build on; query them directly if you want the parts |
+
+**Three definitions are derived rather than read from the contract**, and each is one line to
+change if it disagrees with `fee-policy.ts`:
+
+- `utilisation_bps` is `outstanding_exposure * 10000 / (liquid_balance + outstanding_exposure)`,
+  zero on an empty vault. The contract's own `utilisationBps()` was not called.
+- `current_fee_bps` walks the four tiers with `>=` against the current policy, which is the latest
+  `FeePolicyConfigured` if there is one and the creation policy otherwise.
+- `trade_intents_created` counts intents whose `tokenOut` is not the zero address;
+  `intents_fallen_back` counts `SwapFellBack`.
 
 The SQL for each is in [`views/`](views/) and is short enough to read. `GET /schema` describes
 every view and table with its columns.
@@ -96,8 +114,11 @@ service in front of both is an afternoon.
 
 ## Raw tables
 
-Every event in every ABI has a table named `alias__event`, 33 per chain. The aliases are
-`intent_router`, `liquidity_vault`, `settlement_receiver` and `settlement_receiver_legacy`. Column
+Every event has a table named `alias__event`, 29 per chain. The aliases are `intent_router`,
+`vault_factory`, `settlement_receiver` and `liquidity_vault`, the last being the factory template,
+so **every vault's events land in the same `liquidity_vault__*` tables** with the emitting vault in
+the `address` column. The `policy` tuple is stored as a JSON array of strings, which
+`views/10-vault_policy.sql` flattens into the seven `policy_*` columns. Column
 names follow the ABI parameter names, so quote them: `"intentId"`, `"outputAmount"`. A `uint256`
 column is exact text; its `_dec` companion (`amount_dec`) is numeric, so sum and compare on that.
 

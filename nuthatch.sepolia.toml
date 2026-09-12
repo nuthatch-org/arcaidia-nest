@@ -1,31 +1,56 @@
 [nest]
-name = "arcaidia-nest-sepolia"
+name = "v2-sepolia"
 chain = "sepolia"
 chain_id = 11155111
 rpc_urls = ["https://ethereum-sepolia-rpc.publicnode.com"]
 schema_version = 1
 block_timestamps = true
 
+# Arcaidia v2 (WP-27). Addresses are CREATE2-identical on both chains; the start block is the
+# earliest of the three deployments, as the builder's own manifest uses.
 [[contracts]]
 alias = "intent_router"
-address = "0x58868465d14e0694d033bd511588ae90482b21cc"
-start_block = 11667863
+address = "0x69946ffbbe5f250c7357b89e4072f9eafc1c3ee6"
+start_block = 11688303
 abi = "abis/intent_router.json"
 
 [[contracts]]
-alias = "liquidity_vault"
-address = "0xc74e693938dfbf7c11b787ba27cdde4c0215aaf1"
-start_block = 11675651
-abi = "abis/liquidity_vault.json"
+alias = "vault_factory"
+address = "0xd458d83c874296ec4a29c47655ae47302879b23a"
+start_block = 11688303
+abi = "abis/vault_factory.json"
 
 [[contracts]]
 alias = "settlement_receiver"
-address = "0x9a47a161ea8328b96ad976264d42790881570e71"
-start_block = 11675651
+address = "0x8b93b54d6df61e9422d14c309f3c9ab950b920cd"
+start_block = 11688303
 abi = "abis/settlement_receiver.json"
 
-[[contracts]]
-alias = "settlement_receiver_legacy"
-address = "0xb634d0fda74bacf730b1ef50a32b4c83f13f11fc"
-start_block = 11660148
-abi = "abis/settlement_receiver_legacy.json"
+# Every vault the factory creates, indexed from its own VaultCreated block. The template name is
+# the table prefix, so these stay `liquidity_vault__*` exactly as the v1 readers expect.
+# The four Configured events are not in the builder's table list but the policy and the caps can
+# change after creation, so `vaults.current_fee_bps` would go stale without them.
+[[templates]]
+name = "liquidity_vault"
+abi = "abis/liquidity_vault.json"
+events = [
+    "VaultInitialized",
+    "FastFilled",
+    "DeliveredViaSwap",
+    "SwapFellBack",
+    "Deposit",
+    "Withdraw",
+    "ReimbursementRecorded",
+    "FeesAccrued",
+    "PausedSet",
+    "FeePolicyConfigured",
+    "FillLimitsConfigured",
+    "ReserveFloorConfigured",
+]
+
+[[factories]]
+watch = "vault_factory"
+event = "VaultCreated"
+child_param = "vault"
+template = "liquidity_vault"
+start = 11688303
