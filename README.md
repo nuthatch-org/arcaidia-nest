@@ -40,10 +40,11 @@ one statement. All of these were run against the live nests on 11 September 2026
 SELECT * FROM pending_intents LIMIT 50
 ```
 
-**VaultState** (`vault(id: $vault)`):
+**VaultState** (`vault(id: $vault)`), now one row per factory vault:
 
 ```sql
-SELECT * FROM vault WHERE id = '0xc74e693938dfbf7c11b787ba27cdde4c0215aaf1'
+SELECT * FROM vaults WHERE id = '0xb4ba190d5c78869366e7963f5cccf4c3167d855c'   -- the House Vault
+SELECT id, label, liquid_balance, utilisation_bps, current_fee_bps FROM vaults ORDER BY created_at_block
 ```
 
 **ProtocolState** (`protocolState(id: "arcaidia")`):
@@ -55,7 +56,7 @@ SELECT * FROM protocol_state
 **FillForIntent** (`fills(first: 1, where: { intentId: $id })`):
 
 ```sql
-SELECT id FROM fills WHERE intent_id = '0xce0cee4f0691b25c7d98a32623e98a4752571d7aefd8bceb35b44d14b7b9742c' LIMIT 1
+SELECT id, vault, fee_bps, delivered_via FROM fills WHERE intent_id = '0xYourIntentId' LIMIT 1
 ```
 
 `_meta { block { timestamp } }` has no SQL equivalent because it is on every response already:
