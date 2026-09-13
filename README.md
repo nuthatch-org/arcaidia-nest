@@ -115,8 +115,9 @@ service in front of both is an afternoon.
 
 ## Raw tables
 
-Every event has a table named `alias__event`, 29 per chain. The aliases are `intent_router`,
-`vault_factory`, `settlement_receiver` and `liquidity_vault`, the last being the factory template,
+Every event has a table named `alias__event`, 35 per chain. The aliases are `intent_router`,
+`vault_factory`, `settlement_receiver`, `settlement_receiver_2` (the second receiver, added 13
+September) and `liquidity_vault`, the last being the factory template,
 so **every vault's events land in the same `liquidity_vault__*` tables** with the emitting vault in
 the `address` column. The `policy` tuple is stored as a JSON array of strings, which
 `views/10-vault_policy.sql` flattens into the seven `policy_*` columns. Column

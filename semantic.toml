@@ -293,6 +293,80 @@ overflows_dec = [
     "shares",
 ]
 
+[table.settlement_receiver_2__held_for_vault]
+description = "`HeldForVault(bytes32,address,uint256)` events emitted by the `settlement_receiver_2` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per HeldForVault(bytes32,address,uint256) event"
+
+[table.settlement_receiver_2__held_for_vault.columns]
+amount = "The `amount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+intentId = "The `intentId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+vault = "The `vault` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.settlement_receiver_2__held_for_vault.footguns]
+big_ints = ["amount"]
+overflows_dec = ["amount"]
+
+[table.settlement_receiver_2__lp_reimbursed]
+description = "`LpReimbursed(bytes32,address,uint256)` events emitted by the `settlement_receiver_2` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per LpReimbursed(bytes32,address,uint256) event"
+
+[table.settlement_receiver_2__lp_reimbursed.columns]
+amount = "The `amount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+intentId = "The `intentId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+vault = "The `vault` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.settlement_receiver_2__lp_reimbursed.footguns]
+big_ints = ["amount"]
+overflows_dec = ["amount"]
+
+[table.settlement_receiver_2__receiver_initialized]
+description = "`ReceiverInitialized(address,address,address,address)` events emitted by the `settlement_receiver_2` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per ReceiverInitialized(address,address,address,address) event"
+
+[table.settlement_receiver_2__receiver_initialized.columns]
+asset = "The `asset` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+market = "The `market` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+messageTransmitter = "The `messageTransmitter` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+owner = "The `owner` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.settlement_receiver_2__recipient_paid_by_fallback]
+description = "`RecipientPaidByFallback(bytes32,address,uint256)` events emitted by the `settlement_receiver_2` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per RecipientPaidByFallback(bytes32,address,uint256) event"
+
+[table.settlement_receiver_2__recipient_paid_by_fallback.columns]
+amount = "The `amount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+intentId = "The `intentId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+recipient = "The `recipient` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.settlement_receiver_2__recipient_paid_by_fallback.footguns]
+big_ints = ["amount"]
+overflows_dec = ["amount"]
+
+[table.settlement_receiver_2__reporter_set]
+description = "`ReporterSet(address,bool)` events emitted by the `settlement_receiver_2` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per ReporterSet(address,bool) event"
+
+[table.settlement_receiver_2__reporter_set.columns]
+allowed = "The `allowed` bool parameter - stored as exact text `'true'`/`'false'`, not a SQL boolean. `allowed = true` and `AND`/`NOT` implicitly cast and work; `COALESCE`, `CASE`, `bool_and`/`bool_or` and `UNION` do not. Write `allowed = 'true'` or `CAST(allowed AS BOOLEAN)`. (seeded from the ABI - edit semantic.toml to improve this)"
+reporter = "The `reporter` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.settlement_receiver_2__reporter_set.footguns]
+bools = ["allowed"]
+
+[table.settlement_receiver_2__settled_with_proof]
+description = "`SettledWithProof(bytes32,uint8,uint256,bytes32)` events emitted by the `settlement_receiver_2` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per SettledWithProof(bytes32,uint8,uint256,bytes32) event"
+
+[table.settlement_receiver_2__settled_with_proof.columns]
+amount = "The `amount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+cctpNonce = "The `cctpNonce` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+intentId = "The `intentId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+outcome = "The `outcome` uint8 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.settlement_receiver_2__settled_with_proof.footguns]
+big_ints = ["amount"]
+overflows_dec = ["amount"]
+
 [table.settlement_receiver__held_for_vault]
 description = "`HeldForVault(bytes32,address,uint256)` events emitted by the `settlement_receiver` contract. (seeded from the ABI - edit semantic.toml to improve this)"
 grain = "one row per HeldForVault(bytes32,address,uint256) event"

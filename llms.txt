@@ -6,6 +6,7 @@ A self-hosted blockchain index. Query it locally; there is no third-party API.
 - `intent_router` = 0x69946ffbbe5f250c7357b89e4072f9eafc1c3ee6
 - `vault_factory` = 0xd458d83c874296ec4a29c47655ae47302879b23a
 - `settlement_receiver` = 0x8b93b54d6df61e9422d14c309f3c9ab950b920cd
+- `settlement_receiver_2` = 0xa60c586e4d050233885cd6628b7c1a217574d9c6
 
 ## Tables (one per contract event)
 - `intent_router__destination_configured` - DestinationConfigured(uint256,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, chainId, receiver)
@@ -28,6 +29,12 @@ A self-hosted blockchain index. Query it locally; there is no third-party API.
 - `liquidity_vault__swap_fell_back` - SwapFellBack(bytes32,address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, tokenOut, usdcDelivered)
 - `liquidity_vault__vault_initialized` - VaultInitialized(address,address,uint16) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, owner, asset, reserveFloorBps)
 - `liquidity_vault__withdraw` - Withdraw(address,address,address,uint256,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, caller, receiver, shareOwner, assets, shares)
+- `settlement_receiver_2__held_for_vault` - HeldForVault(bytes32,address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, vault, amount)
+- `settlement_receiver_2__lp_reimbursed` - LpReimbursed(bytes32,address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, vault, amount)
+- `settlement_receiver_2__receiver_initialized` - ReceiverInitialized(address,address,address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, owner, asset, market, messageTransmitter)
+- `settlement_receiver_2__recipient_paid_by_fallback` - RecipientPaidByFallback(bytes32,address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, recipient, amount)
+- `settlement_receiver_2__reporter_set` - ReporterSet(address,bool) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, reporter, allowed)
+- `settlement_receiver_2__settled_with_proof` - SettledWithProof(bytes32,uint8,uint256,bytes32) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, outcome, amount, cctpNonce)
 - `settlement_receiver__held_for_vault` - HeldForVault(bytes32,address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, vault, amount)
 - `settlement_receiver__lp_reimbursed` - LpReimbursed(bytes32,address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, intentId, vault, amount)
 - `settlement_receiver__receiver_initialized` - ReceiverInitialized(address,address,address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, owner, asset, market, messageTransmitter)

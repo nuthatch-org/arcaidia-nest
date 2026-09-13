@@ -26,6 +26,14 @@ address = "0x8b93b54d6df61e9422d14c309f3c9ab950b920cd"
 start_block = 11688303
 abi = "abis/settlement_receiver.json"
 
+# The builder's second SettlementReceiver, added 2026-09-13. Same events as the first, so the same ABI;
+# both stay indexed and `settlements` reads the two together.
+[[contracts]]
+alias = "settlement_receiver_2"
+address = "0xa60c586e4d050233885cd6628b7c1a217574d9c6"
+start_block = 11690908
+abi = "abis/settlement_receiver.json"
+
 # Every vault the factory creates, indexed from its own VaultCreated block. The template name is
 # the table prefix, so these stay `liquidity_vault__*` exactly as the v1 readers expect.
 # The four Configured events are not in the builder's table list but the policy and the caps can
