@@ -1,6 +1,6 @@
 # arcaidia-nest
 
-A [Nuthatch](https://github.com/nightswatchhq/nuthatch) index of the Arcaidia contracts on **Arc
+A [Nuthatch](https://github.com/nuthatch-org/nuthatch) index of the Arcaidia contracts on **Arc
 Testnet** and **Ethereum Sepolia**, built from the Arcaidia v2 indexer pack (WP-27 / WP-31).
 Three fixed contracts plus **every vault the factory creates**, discovered automatically, and ten
 SQL views that reproduce the subgraph's entities by name.
@@ -143,7 +143,7 @@ hit.
 
 ```sh
 curl -fsSL https://nuthatch-indexer.com/install.sh | sh
-nuthatch init --from https://github.com/nightswatchhq/arcaidia-nest
+nuthatch init --from https://github.com/nuthatch-org/arcaidia-nest
 nuthatch dev --dir arcaidia-nest --window 4000 --finality-only --rpc https://arc-testnet.drpc.org
 ```
 
@@ -178,4 +178,4 @@ Arc, twenty of them, matches an event in those files; checked the same day.
 
 ## Help
 
-[Night's Watch Discord](https://discord.gg/CQewvyJ69Y), or reply in the thread this came from.
+[Nuthatch Discord](https://discord.gg/CQewvyJ69Y), or reply in the thread this came from.
